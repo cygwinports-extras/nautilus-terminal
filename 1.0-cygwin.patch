@@ -1,0 +1,17 @@
+/proc/PID/wchan is Linux-specific
+
+--- origsrc/nautilus-terminal_1.0_src/src/nautilus_terminal.py	2011-10-17 07:03:20.000000000 -0500
++++ src/nautilus-terminal_1.0_src/src/nautilus_terminal.py	2012-12-15 20:55:12.293843600 -0600
+@@ -261,7 +261,11 @@ class NautilusTerminal(object):
+     def _shell_is_busy(self):
+         """Check if the shell is waiting for a command or not."""
+         wchan_path = "/proc/%i/wchan" % self.shell_pid
+-        wchan = open(wchan_path, "r").read()
++        try:
++            wchan = open(wchan_path, "r").read()
++        except IOError:
++            #We can't know...
++            return False
+         if wchan == "n_tty_read":
+             return False
+         elif wchan == "schedule":

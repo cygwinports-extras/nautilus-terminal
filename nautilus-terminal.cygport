@@ -1,0 +1,24 @@
+inherit python
+
+NAME="nautilus-terminal"
+VERSION=1.0
+RELEASE=1
+CATEGORY="Gnome"
+SUMMARY="Embedded terminal for Nautilus file manager"
+DESCRIPTION="Nautilus Terminal is a terminal embedded in Nautilus, the GNOME
+file browser. It is always open in the current folder, and follows the folder
+navigation (the 'cd' command is automatically executed when you move to another
+folder)."
+REQUIRES="nautilus-python girepository-Gtk3.0 girepository-Vte2.90"
+HOMEPAGE="http://projects.flogisoft.com/nautilus-terminal/"
+SRC_URI="${HOMEPAGE}/download/${NAME}_${VERSION}_src.tar.gz"
+SRC_DIR="${NAME}_${VERSION}_src"
+PATCH_URI="1.0-cygwin.patch"
+
+src_compile() { :; }
+
+src_install() {
+	cd ${S}
+	./install.sh -p ${D} || error "install failed"
+	python_optimize /usr/share/nautilus-python
+}
